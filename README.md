@@ -320,7 +320,7 @@ content: >-
   {%- macro t(n) %}{{ states(p ~ n)|float(0)|round(1) }}{% endmacro -%}
   | 🔥 **Heat pump** | **{{ states(p ~ 'status_warmwasser_02_052_status') }}** |
   |:--|--:|
-  | DHW is / set | {{ t('warmwassertemp_aktuell_00_004_temperature') }} / {{ t('warmwassertemp_soll_aktuell_01_004_temperature') }} °C |
+  | DHW is / set | {{ t('warmwassertemp_aktuell_00_004_temperature') }} / {{ t('warmwassertemp_soll_05_051_temperature') }} °C |
   | Flow / return | {{ t('vorlauftemp_waermepumpe_twv_00_007_temperature') }} / {{ t('ruecklauftemp_waermepumpe_twr_00_008_temperature') }} °C |
   | Source in / out | {{ t('eintrittstemp_waermequelle_tqe_00_071_temperature') }} / {{ t('austrittstemp_waermequelle_tqa_00_070_temperature') }} °C |
   | Buffer top / mid | {{ t('vorlauftemp_puffersp_tpo_00_015_temperature') }} / {{ t('vorlauftemp_puffersp_tpm_00_017_temperature') }} °C |
@@ -333,6 +333,11 @@ Note the labels: `sollwert_heizkreis_vorlauftemp_01_002` really is the heating
 **flow** temperature and `istwert_heizkreis_vorlauftemp_00_002` really is the
 room **setpoint** — the entity IDs keep the upstream names, which are shifted.
 See problem 1.
+
+`05-051` is the configured DHW setpoint, constant at whatever you set.
+`01-004` is the momentary demand and drops to 10 °C when no charge is
+requested — useful to see whether a charge cycle is active, misleading if
+you expect the setting.
 
 Entity IDs are derived from the message names, so if you rename messages in
 `15.csv` the entity IDs follow. Check yours first:
