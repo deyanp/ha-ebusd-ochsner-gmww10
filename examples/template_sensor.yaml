@@ -1,0 +1,38 @@
+# Combined running state
+#
+# The controller exposes three separate status registers and none of them alone
+# answers "is the heat pump doing anything, and what?". This folds them into one
+# value:
+#
+#   Warmwasser              DHW charge running
+#   Heizung                 space heating running
+#   Warmwasser + Heizung    both
+#   <heat pump status>      falls through to 02-053 for defrost, fault, blocked
+#   Aus                     everything off
+#
+# Create it through the UI (Settings -> Devices & Services -> Helpers ->
+# Template -> Template a sensor) and paste the state template below, or drop
+# this file into a `template:` block in configuration.yaml.
+
+template:
+  - sensor:
+      - name: "WP Betrieb"
+        unique_id: wp_betrieb
+        state: >-
+          {% set p = 'sensor.heating_ebusd_ochsner_' %}
+          {% set ww = states(p ~ 'status_warmwasser_02_052_status') %}
+          {% set hk = states(p ~ 'status_heizkreis_02_051_status') %}
+          {% set wp = states(p ~ 'status_waermepumpe_02_053_status') %}
+          {% set off = ['Abgeschaltet','unknown','unavailable'] %}
+          {% set a = [] %}
+          {% if ww not in off %}{% set a = a + ['Warmwasser'] %}{% endif %}
+          {% if hk not in off %}{% set a = a + ['Heizung'] %}{% endif %}
+          {% if a %}{{ a | join(' + ') }}
+          {% elif wp not in off %}{{ wp }}
+          {% else %}Aus{% endif %}
+        icon: >-
+          {% if states('sensor.wp_betrieb') in ['Aus','unknown','unavailable'] %}
+          mdi:heat-pump-outline
+          {% else %}
+          mdi:heat-pump
+          {% endif %}

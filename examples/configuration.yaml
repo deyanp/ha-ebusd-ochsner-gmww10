@@ -1,0 +1,91 @@
+# Additions to configuration.yaml
+#
+# ebusd publishes every message as JSON on ebusd/ochsner/<message name>.
+# Home Assistant's MQTT discovery (driven by the add-on's mqtt-hassio.cfg)
+# creates entities for temperatures, statuses and percentages, but not for
+# L/min, kW/h, MW/h or the BCD counters. Define those by hand.
+#
+# Only one `mqtt:` key is allowed in configuration.yaml. If you already have
+# one, merge these blocks into it rather than adding a second.
+
+mqtt:
+  sensor:
+    # --- flow rates -------------------------------------------------------
+    # Both read 0 when the heat pump is idle. That is correct, not a fault.
+    - name: "Ochsner flow rate heating"
+      unique_id: ochsner_flow_heating
+      state_topic: "ebusd/ochsner/Volumenstrom.Waermenutzung.21.002"
+      value_template: "{{ value_json.lmin.value }}"
+      unit_of_measurement: "L/min"
+      state_class: measurement
+
+    - name: "Ochsner flow rate source"
+      unique_id: ochsner_flow_source
+      state_topic: "ebusd/ochsner/Volumenstrom.Waermequelle.21.090"
+      value_template: "{{ value_json.lmin.value }}"
+      unit_of_measurement: "L/min"
+      state_class: measurement
+
+    # --- energy counters --------------------------------------------------
+    # The controller splits these across a kWh and an MWh register. Add them
+    # together in a template sensor if you want a single total.
+    - name: "Ochsner heat energy kWh"
+      unique_id: ochsner_heat_energy_kwh
+      state_topic: "ebusd/ochsner/Heizenergie.kWh.23.001"
+      value_template: "{{ value_json.kwh.value }}"
+      unit_of_measurement: "kWh"
+      state_class: total_increasing
+
+    - name: "Ochsner heat energy MWh"
+      unique_id: ochsner_heat_energy_mwh
+      state_topic: "ebusd/ochsner/Heizenergie.MWh.23.010"
+      value_template: "{{ value_json.mwh.value }}"
+      unit_of_measurement: "MWh"
+      state_class: total_increasing
+
+    - name: "Ochsner DHW energy kWh"
+      unique_id: ochsner_dhw_energy_kwh
+      state_topic: "ebusd/ochsner/Warmwasserenergie.kWh.23.006"
+      value_template: "{{ value_json.kwh.value }}"
+      unit_of_measurement: "kWh"
+      state_class: total_increasing
+
+    - name: "Ochsner DHW energy MWh"
+      unique_id: ochsner_dhw_energy_mwh
+      state_topic: "ebusd/ochsner/Warmwasserenergie.MWh.23.013"
+      value_template: "{{ value_json.mwh.value }}"
+      unit_of_measurement: "MWh"
+      state_class: total_increasing
+
+    # --- counters ---------------------------------------------------------
+    - name: "Ochsner compressor cycles"
+      unique_id: ochsner_cycles
+      state_topic: "ebusd/ochsner/Waermepumpe.Schaltzyklen.02.080"
+      value_template: "{{ value_json.cycles4.value }}"
+      state_class: total_increasing
+
+    - name: "Ochsner operating hours"
+      unique_id: ochsner_operating_hours
+      state_topic: "ebusd/ochsner/Waermepumpe.Betriebsstunden.02.081"
+      value_template: "{{ value_json.hours4.value }}"
+      unit_of_measurement: "h"
+      state_class: total_increasing
+
+  select:
+    # --- writable operating mode -----------------------------------------
+    # 09-075 on the OTE panel. 0 = off, 1 = automatic.
+    # Requires the `w,ochsner,Betriebswahl.Waermepumpe.09.075,...` row in
+    # 15.csv and the `wpbetrieb` template — both are in config/tem/ here.
+    #
+    # This genuinely disables the heat generator. It is the right control for
+    # a grid-shortage or tariff automation, and the wrong one for anything you
+    # might trigger by accident.
+    - name: "Ochsner operating mode"
+      unique_id: ochsner_operating_mode
+      state_topic: "ebusd/ochsner/Betriebswahl.Waermepumpe.09.075"
+      value_template: "{{ value_json.status.value }}"
+      command_topic: "ebusd/ochsner/Betriebswahl.Waermepumpe.09.075/set"
+      options:
+        - "Aus"
+        - "Automatik"
+      icon: mdi:heat-pump

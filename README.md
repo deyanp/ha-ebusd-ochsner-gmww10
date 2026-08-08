@@ -334,10 +334,16 @@ Note the labels: `sollwert_heizkreis_vorlauftemp_01_002` really is the heating
 room **setpoint** — the entity IDs keep the upstream names, which are shifted.
 See problem 1.
 
-`05-051` is the configured DHW setpoint, constant at whatever you set.
-`01-004` is the momentary demand and drops to 10 °C when no charge is
-requested — useful to see whether a charge cycle is active, misleading if
-you expect the setting.
+Two more that catch people out. `05-051` is the **configured** DHW setpoint and
+stays at whatever you set it to. `01-004` is the **momentary demand** and drops
+to 10 °C whenever no charge is requested — useful for seeing that a charge cycle
+is running, misleading if you expect the setting. Both are correct; they answer
+different questions.
+
+The `group` field in each reply is *not* globally unique — it counts within a
+category, so `129` means one thing under `01-` and something else under `03-`.
+Use it to detect the shift, then confirm against the value's plausible range
+(`min`/`max` fields) before concluding a message is mislabelled.
 
 Entity IDs are derived from the message names, so if you rename messages in
 `15.csv` the entity IDs follow. Check yours first:
@@ -374,6 +380,9 @@ mqtt:
       state_class: measurement
       unique_id: ochsner_flow_heating
 ```
+
+See [`examples/`](examples/) for the full set — flow rates, a writable operating
+mode, a combined running-state sensor, and a PV-surplus automation.
 
 **Heating-curve parameters report broken ranges.** `Norm.Aussentemperatur.03.012`
 and `Vorlauftemp.Norm.Aussentemp.03.013` return a minimum above their maximum.

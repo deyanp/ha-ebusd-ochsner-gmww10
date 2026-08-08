@@ -1,0 +1,96 @@
+# PV surplus -> hot water
+#
+# Raises the DHW setpoint while the PV array is producing more than the house
+# needs, so the tank is charged with your own electricity instead of at night
+# from the grid. Lowers it again when the surplus goes away.
+#
+# Why a setpoint and not a start command: there is no "start the compressor"
+# message on the eBUS, deliberately. Minimum off-time, defrost logic and
+# pressure limits live in the controller. Raising a setpoint is a *request* —
+# the controller decides when to act on it, keeping all its protections.
+#
+# On a brine/water machine this is worth more than it looks: with a source
+# around 10-25 °C the COP is high, so a kWh of surplus becomes four or five kWh
+# of stored heat.
+#
+# Create through the UI (Settings -> Automations -> Create -> Edit in YAML) and
+# paste the body below, or add it to automations.yaml.
+#
+# --- adjust these three numbers to your installation -----------------------
+#
+#   3000 W  turn-on threshold. Must sit above what the heat pump draws while
+#           charging (roughly 1.5-2.5 kW here) or you will pull from the grid.
+#   1500 W  turn-off threshold, deliberately lower so passing clouds do not
+#           abort a cycle that has already started.
+#     55 °C target. Higher costs efficiency — every degree above the normal
+#           setpoint lowers the COP. 60 °C is about the sensible ceiling.
+#
+# Replace sensor.inverter_pv_power with your own production sensor. If you have
+# a true surplus sensor (production minus consumption), use that instead and
+# lower both thresholds accordingly.
+
+alias: "PV surplus: charge hot water"
+description: >-
+  Raises the Ochsner DHW setpoint from 50 to 55 °C during sustained PV surplus
+  so the tank stores it, and returns it to 50 when the surplus ends or the
+  evening arrives. Also resets on Home Assistant start, so a crash while the
+  setpoint is raised cannot leave it raised for weeks.
+mode: single
+
+triggers:
+  - trigger: numeric_state
+    entity_id: sensor.inverter_pv_power
+    above: 3000
+    for:
+      minutes: 10
+    id: surplus
+  - trigger: numeric_state
+    entity_id: sensor.inverter_pv_power
+    below: 1500
+    for:
+      minutes: 10
+    id: no_surplus
+  - trigger: sun
+    event: sunset
+    offset: "-01:00:00"
+    id: no_surplus
+  - trigger: homeassistant
+    event: start
+    id: no_surplus
+
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: surplus
+          # No point starting a charge that will not finish before dark.
+          - condition: sun
+            before: sunset
+            before_offset: "-01:00:00"
+          # Skip if already raised — avoids rewriting the same value.
+          - condition: numeric_state
+            entity_id: sensor.heating_ebusd_ochsner_warmwassertemp_soll_05_051_temperature
+            below: 52
+        sequence:
+          # Make sure the heat generator is actually enabled.
+          - action: select.select_option
+            target:
+              entity_id: select.ochsner_betriebswahl
+            data:
+              option: "Automatik"
+          - action: mqtt.publish
+            data:
+              topic: ebusd/ochsner/Warmwassertemp.SOLL.05.051/set
+              payload: "55"
+
+      - conditions:
+          - condition: trigger
+            id: no_surplus
+          - condition: numeric_state
+            entity_id: sensor.heating_ebusd_ochsner_warmwassertemp_soll_05_051_temperature
+            above: 52
+        sequence:
+          - action: mqtt.publish
+            data:
+              topic: ebusd/ochsner/Warmwassertemp.SOLL.05.051/set
+              payload: "50"
