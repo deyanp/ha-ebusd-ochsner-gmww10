@@ -58,6 +58,7 @@ r1,ochsner,Warmwassertemp.Spar.05.086,Spar Warmwassertemperatur,,,,05d6004e,,,pa
 w,ochsner,Warmwassertemp.Spar.05.086,Spar Warmwassertemperatur,,,,05d6004e,,,tempt2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #______________________________,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 r1,ochsner,Betriebswahl.Waermepumpe.09.075,Betriebswahl Wärmeerzeuger 09-075,,,,09cb0042,,,param,,,,,,wpbetrieb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+w,ochsner,Betriebswahl.Waermepumpe.09.075,Betriebswahl Wärmeerzeuger 09-075,,,,09cb0042,,,wpbetrieb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #______________________________,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 r1,ochsner,Waermepumpe.Betriebsstunden.02.081,Betriebsstunden,,,,7d870002,,,param2,,,,,,hours4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 r1,ochsner,Volumenstrom.Waermenutzung.21.002,Volumenstrom heizungsseitig,,,,7d880002,,,param,,,,,,lmin,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
