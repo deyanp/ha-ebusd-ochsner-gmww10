@@ -58,8 +58,8 @@ hkstatus:status,UCH,0=Abgeschaltet;1=Heizbetrieb;3=Spar Heizbetrieb;4=Frostschut
 wwstatus:status,UCH,0=Abgeschaltet;1=Normal Ladebetrieb;2=Komfort Ladebetrieb;5=Stoerung;8=Spar Ladebetrieb;10=Elektro Nachladung;11=Ladungsabbruch,,
 kpstatus:status,UCH,0=Aus;1=Ein,,
 volume,UIN,10,,
-kwh,UIN,10,kW/h,
-mwh,UIN,,MW/h,
+kwh,UIN,10,kWh,
+mwh,UIN,,MWh,
 #hours,HCD:2,,h,
 hours,HCD:3,,h,
 lmin,UIN,10,L/min,	
@@ -70,7 +70,7 @@ wtime,HTI,,,time
 # --- added for OTE plus (TEM 22420, SW 0502) -------------------------------
 # Operating mode selectors referenced by 15.csv but missing upstream.
 modehotwater:status,UCH,0=Standbybetrieb;1=Automatik;4=Normalbetrieb;5=Sparbetrieb;7=Handbetrieb,,
-wpbetrieb:status,UCH,0=Standbybetrieb;1=Automatik;4=Normalbetrieb;5=Sparbetrieb;7=Handbetrieb
+wpbetrieb:status,UCH,0=Standbybetrieb;1=Automatik;4=Normalbetrieb;5=Sparbetrieb;7=Handbetrieb,,
 # 4-byte BCD counters. Upstream uses HCD:3 which truncates the value on this
 # firmware: operating hours and cycle counts carry a fourth byte.
 cycles4,HCD:4,,,
