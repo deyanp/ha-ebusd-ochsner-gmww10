@@ -70,7 +70,6 @@ wtime,HTI,,,time
 # --- added for OTE plus (TEM 22420, SW 0502) -------------------------------
 # Operating mode selectors referenced by 15.csv but missing upstream.
 modehotwater:status,UCH,0=Standbybetrieb;1=Automatik;4=Normalbetrieb;5=Sparbetrieb;7=Handbetrieb,,
-# wpbetrieb:status,UCH,0=Standbybetrieb;1=Automatik;4=Normalbetrieb;5=Sparbetrieb;7=Handbetrieb,,
 wpbetrieb:status,UCH,0=Aus;1=Automatik,,
 # 4-byte BCD counters. Upstream uses HCD:3 which truncates the value on this
 # firmware: operating hours and cycle counts carry a fourth byte.
