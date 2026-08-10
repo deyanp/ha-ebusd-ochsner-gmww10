@@ -22,7 +22,8 @@ r1,ochsner,Istwert.Heizkreis.Vorlauftemp.00.002,Istwert Heizkreis Vorlauftempera
 r1,ochsner,Sollwert.Heizkreis.Vorlauftemp.01.002,Sollwert Heizkreis Vorlauftemperatur - gegen OTE geprueft 10.08.2026 (0),,,,01820048,,,param,,,,,,tempt,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 r1,ochsner,Warmwassertemp.SOLL.aktuell.01.004,Aktueller Warmwassersollwert,,,,7982000e,,,param,,,,,,tempt,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 r1,ochsner,Status.Heizkreispumpe.01.020,Status Heizkreispumpe,,,,01940048,,,param,,,,,,kpstatus,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-r1,ochsner,Mischer.Heizkreispumpe.01.021,Mischer Heizkreis,,,,7581000a,,,param,,,,,,percent,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+# NICHT IMPLEMENTIERT - kein Mischer verbaut. Bestaetigt ueber zwei Adressierungen: 7581000a und 01950048 liefern beide Fuellbytes. Geprueft 10.08.2026.
+#r1,ochsner,Mischer.Heizkreispumpe.01.021,Mischer Heizkreis,,,,7581000a,,,param,,,,,,percent,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 r1,ochsner,Status.Waermeerzeugerpumpe.01.022,Waermeerzeugerpumpe Ausgangsstatus,,,,01960042,,,param,,,,,,percent100,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 r1,ochsner,Warmwasserbereitung.mit.Waermepumpe.01.066,Status Heizkreispumpe,,,,01c2004e,,,param,,,,,,kpstatus,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #r1,ochsner,Drehzahl.Waermeerzeugerpumpe.01.076,SOLL Verdichter Drehzahl,,,,01cc0042,,,param,,,,,,percent100,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -56,8 +57,9 @@ r1,ochsner,Betriebswahl.Warmwasser.05.050,Aktuelle Betriebswahl Warmwasser,,,,05
 w,ochsner,Betriebswahl.Warmwasser.05.050,Aktuelle Betriebswahl Warmwasser,,,,05b2004e,,,modehotwater,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 r1,ochsner,Warmwassertemp.SOLL.05.051,Aktueller Warmwassersollwert,,,,05b3004e,,,param,,,,,,tempt,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 w,ochsner,Warmwassertemp.SOLL.05.051,Aktueller Warmwassersollwert,,,,05b3004e,,,tempt,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-r1,ochsner,Warmwassertemp.Spar.05.086,Spar Warmwassertemperatur,,,,05d6004e,,,param,,,,,,tempt2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-w,ochsner,Warmwassertemp.Spar.05.086,Spar Warmwassertemperatur,,,,05d6004e,,,tempt2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+# NICHT IMPLEMENTIERT - Antwort besteht aus Fuellbytes (group=-, Typ 00, min=max=0). Geprueft 10.08.2026.
+#r1,ochsner,Warmwassertemp.Spar.05.086,Spar Warmwassertemperatur,,,,05d6004e,,,param,,,,,,tempt2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+#w,ochsner,Warmwassertemp.Spar.05.086,Spar Warmwassertemperatur,,,,05d6004e,,,tempt2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #______________________________,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 r1,ochsner,Betriebswahl.Waermepumpe.09.075,Betriebswahl Wärmeerzeuger 09-075,,,,09cb0042,,,param,,,,,,wpbetrieb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 w,ochsner,Betriebswahl.Waermepumpe.09.075,Betriebswahl Waermepumpe schreiben,,,,09cb0042,,,wpbetrieb,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
