@@ -42,6 +42,12 @@ maxs:max,SIN,10,,Maximum
 mins:min,SIN,10,,Minimum
 command,group;value;type;unit,,,Kommando
 param,command;maxs;mins,,,Parameter
+maxb:max,D1B,,°C,Maximum
+minb:min,D1B,,°C,Minimum
+maxc:max,D1C,,°C,Maximum
+minc:min,D1C,,°C,Minimum
+paramb,command;maxb;IGN:1;minb;IGN:1,,,Parameter mit 1-Byte-Grenzwerten D1B
+paramc,command;maxc;IGN:1;minc;IGN:1,,,Parameter mit 1-Byte-Grenzwerten D1C
 param1,command;maxs;HEX,,,Parameter
 param2,command;maxs,,,Parameter
 tempt:temperature,SIN,10,°C,Temperatur
